@@ -1,0 +1,65 @@
+{
+  "eval_id": 2,
+  "eval_name": "eval-2-asos",
+  "prompt": "I sell e-commerce personalization software \u2014 check nosto.com for a sense of what we do. I have a meeting with the digital team at ASOS (asos.com) in London next Thursday. Can you create a personalized microsite I can show them? My name is Sam Rivera, sam@personify.io, +44 20 7946 0823.",
+  "assertions": [
+    {
+      "name": "html_file_created",
+      "description": "An HTML file was saved to the output directory",
+      "check": "file_exists",
+      "pattern": "*.html"
+    },
+    {
+      "name": "prospect_name_present",
+      "description": "ASOS appears in the page",
+      "check": "file_contains_any",
+      "patterns": [
+        "ASOS",
+        "asos"
+      ]
+    },
+    {
+      "name": "retail_language",
+      "description": "Content uses retail/e-commerce terminology",
+      "check": "file_contains_any",
+      "patterns": [
+        "conversion",
+        "AOV",
+        "basket",
+        "shopper",
+        "fashion",
+        "retail",
+        "customer journey",
+        "personali"
+      ]
+    },
+    {
+      "name": "contact_email_present",
+      "description": "Sam's email is in the page",
+      "check": "file_contains",
+      "pattern": "sam@personify.io"
+    },
+    {
+      "name": "phone_button_present",
+      "description": "Phone CTA is present since phone was provided",
+      "check": "file_contains",
+      "pattern": "href=\"tel:"
+    },
+    {
+      "name": "three_sections_present",
+      "description": "All three section IDs exist",
+      "check": "file_contains_all",
+      "patterns": [
+        "sec-intro",
+        "sec-challenges",
+        "sec-trends"
+      ]
+    },
+    {
+      "name": "no_unfilled_placeholders",
+      "description": "No {{PLACEHOLDER}} tokens remain",
+      "check": "file_not_contains",
+      "pattern": "{{"
+    }
+  ]
+}

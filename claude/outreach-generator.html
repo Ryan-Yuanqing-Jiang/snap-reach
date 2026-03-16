@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+  <title>Outreach Generator · Personalized Sales Pages</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Archivo+Black&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #08090f;
+      --surface: #0f1117;
+      --surface2: #181c27;
+      --border: rgba(255,255,255,0.08);
+      --accent: #4f6ef7;
+      --accent-glow: rgba(79,110,247,0.25);
+      --green: #10b981;
+      --red: #f43f5e;
+      --text: #f1f5f9;
+      --muted: rgba(241,245,249,0.45);
+      --font: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+      --radius: 14px;
+      --radius-sm: 9px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    /* ===== HEADER ===== */
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 16px 24px;
+      background: rgba(8,9,15,0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: 'Archivo Black', sans-serif;
+      font-size: 16px;
+      letter-spacing: 0.04em;
+      color: var(--text);
+    }
+    .logo span { color: var(--accent); }
+
+    .step-dots {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .step-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--border);
+      transition: all 0.3s;
+    }
+    .step-dot.active { background: var(--accent); width: 20px; border-radius: 4px; }
+    .step-dot.done { background: var(--green); }
+
+    /* ===== CONTAINER ===== */
+    .container {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ===== SCREENS ===== */
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* ===== TYPOGRAPHY ===== */
+    h1 {
+      font-size: clamp(24px, 5vw, 30px);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+    h1 em {
+      font-style: normal;
+      background: linear-gradient(125deg, #818cf8, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .subtitle {
+      font-size: 15px;
+      color: var(--muted);
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+
+    /* ===== FORM SECTIONS ===== */
+    .form-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      margin-bottom: 14px;
+    }
+    .form-section-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .form-grid.cols-1 { grid-template-columns: 1fr; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group.full { grid-column: 1 / -1; }
+
+    label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.03em;
+    }
+
+    input[type="text"], input[type="email"], input[type="url"],
+    input[type="tel"], input[type="password"], select {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      font-family: var(--font);
+      font-size: 14px;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      -webkit-appearance: none;
+    }
+    input:focus, select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+    input::placeholder { color: rgba(241,245,249,0.2); }
+    select option { background: #181c27; }
+
+    /* API toggle */
+    .toggle-row {
+      display: flex;
+      background: var(--surface2);
+      border-radius: var(--radius-sm);
+      padding: 3px;
+      margin-bottom: 16px;
+      gap: 2px;
+    }
+    .toggle-btn {
+      flex: 1;
+      padding: 8px 12px;
+      border: none;
+      background: none;
+      border-radius: 7px;
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .toggle-btn.active {
+      background: var(--accent);
+      color: white;
+    }
+
+    /* ===== BUTTONS ===== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 13px 22px;
+      border-radius: var(--radius-sm);
+      font-family: var(--font);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .btn-primary { background: var(--accent); color: white; width: 100%; margin-top: 8px; }
+    .btn-primary:hover:not(:disabled) { background: #3d5af5; transform: translateY(-1px); box-shadow: 0 8px 24px var(--accent-glow); }
+    .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-secondary { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+    .btn-secondary:hover { border-color: rgba(255,255,255,0.2); }
+    .btn-green { background: var(--green); color: white; }
+    .btn-green:hover { background: #0ea472; transform: translateY(-1px); }
+    .btn-outline { background: transparent; color: var(--accent); border: 1px solid rgba(79,110,247,0.4); }
+    .btn-outline:hover { background: var(--accent-glow); }
+    .btn-row { display: flex; gap: 10px; }
+    .btn-row .btn { flex: 1; }
+
+    /* ===== PROGRESS SCREEN ===== */
+    .progress-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 60px 0 40px;
+      text-align: center;
+    }
+
+    .pulse-ring {
+      position: relative;
+      width: 64px;
+      height: 64px;
+      margin-bottom: 32px;
+    }
+    .pulse-ring::before {
+      content: '';
+      position: absolute;
+      inset: -12px;
+      border-radius: 50%;
+      background: var(--accent-glow);
+      animation: pulse 1.5s ease-out infinite;
+    }
+    .spinner {
+      width: 64px; height: 64px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes pulse { 0% { transform: scale(0.8); opacity: 0.6; } 100% { transform: scale(1.5); opacity: 0; } }
+
+    .progress-title { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+    .progress-subtitle { color: var(--muted); font-size: 14px; }
+
+    .steps-list {
+      margin-top: 36px;
+      text-align: left;
+      width: 100%;
+      max-width: 320px;
+    }
+    .p-step {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 11px 0;
+      font-size: 14px;
+      color: var(--muted);
+      transition: color 0.3s;
+    }
+    .p-step.active { color: var(--text); }
+    .p-step.done { color: var(--green); }
+    .p-step-icon {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700;
+      flex-shrink: 0;
+      transition: all 0.3s;
+    }
+    .p-step.active .p-step-icon { border-color: var(--accent); background: var(--accent-glow); color: #818cf8; }
+    .p-step.done .p-step-icon { border-color: var(--green); background: rgba(16,185,129,0.15); color: var(--green); }
+
+    /* ===== RESULT SCREEN ===== */
+    .result-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 14px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600;
+      background: rgba(16,185,129,0.12);
+      color: var(--green);
+      border: 1px solid rgba(16,185,129,0.2);
+      margin-bottom: 16px;
+    }
+
+    .result-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      margin-bottom: 14px;
+    }
+    .card-title {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .card-sub {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    .code-block {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      color: #a5f3fc;
+      margin: 10px 0 14px;
+      position: relative;
+      overflow-x: auto;
+    }
+
+    .url-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+    }
+    .url-row input { flex: 1; }
+    .url-row .btn { flex-shrink: 0; padding: 10px 16px; font-size: 13px; }
+
+    .qr-container {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      background: white;
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      margin-top: 14px;
+    }
+    .qr-container.show { display: flex; }
+    .qr-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #111;
+    }
+    .qr-sub {
+      font-size: 12px;
+      color: #666;
+      text-align: center;
+    }
+
+    .deploy-progress {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--muted);
+      padding: 10px 0;
+    }
+    .deploy-progress.show { display: flex; }
+    .mini-spinner {
+      width: 16px; height: 16px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      flex-shrink: 0;
+    }
+
+    .deployed-url {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: var(--surface2);
+      border: 1px solid rgba(16,185,129,0.2);
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      margin-top: 12px;
+    }
+    .deployed-url.show { display: flex; }
+    .deployed-url a {
+      font-size: 13px;
+      color: var(--green);
+      word-break: break-all;
+      text-decoration: none;
+    }
+    .copy-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 18px;
+      padding: 2px 4px;
+      flex-shrink: 0;
+      transition: color 0.2s;
+    }
+    .copy-btn:hover { color: var(--text); }
+
+    /* ===== ERROR / HINT ===== */
+    .error-msg {
+      display: none;
+      background: rgba(244,63,94,0.1);
+      border: 1px solid rgba(244,63,94,0.2);
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      font-size: 13px;
+      color: var(--red);
+      margin-top: 12px;
+      line-height: 1.5;
+    }
+    .error-msg.show { display: block; }
+
+    .hint {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 8px;
+      line-height: 1.5;
+    }
+
+    .separator {
+      height: 1px;
+      background: var(--border);
+      margin: 20px 0;
+    }
+
+    @media (max-width: 500px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .btn-row { flex-direction: column; }
+      .container { padding: 28px 16px 60px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="logo">OUT<span>REACH</span></div>
+  <div class="step-dots">
+    <div class="step-dot active" id="dot-1"></div>
+    <div class="step-dot" id="dot-2"></div>
+    <div class="step-dot" id="dot-3"></div>
+  </div>
+</header>
+
+<!-- ===== SCREEN 1: CONFIGURE ===== -->
+<div class="screen active" id="screen-1">
+  <div class="container">
+    <h1>Create your <em>personalized</em><br>sales page</h1>
+    <p class="subtitle">Enter two URLs. Walk away with a beautiful, prospect-specific microsite and QR code — ready in under 60 seconds.</p>
+
+    <!-- Your details -->
+    <div class="form-section">
+      <div class="form-section-title">Your Details</div>
+      <div class="form-grid">
+        <div class="form-group full">
+          <label>YOUR WEBSITE URL</label>
+          <input type="url" id="seller-url" placeholder="https://yourcompany.com" autocomplete="url">
+        </div>
+        <div class="form-group">
+          <label>YOUR NAME</label>
+          <input type="text" id="seller-name" placeholder="Alex Johnson" autocomplete="name">
+        </div>
+        <div class="form-group">
+          <label>YOUR EMAIL</label>
+          <input type="email" id="seller-email" placeholder="alex@company.com" autocomplete="email">
+        </div>
+        <div class="form-group full">
+          <label>YOUR PHONE (OPTIONAL)</label>
+          <input type="tel" id="seller-phone" placeholder="+1 (555) 000-0000" autocomplete="tel">
+        </div>
+      </div>
+    </div>
+
+    <!-- Prospect details -->
+    <div class="form-section">
+      <div class="form-section-title">Prospect's Details</div>
+      <div class="form-grid cols-1">
+        <div class="form-group">
+          <label>PROSPECT'S WEBSITE OR LINKEDIN URL</label>
+          <input type="url" id="prospect-url" placeholder="https://theircompany.com">
+        </div>
+      </div>
+    </div>
+
+    <!-- AI config -->
+    <div class="form-section">
+      <div class="form-section-title">AI Configuration</div>
+      <div class="toggle-row">
+        <button class="toggle-btn active" id="btn-claude" onclick="setApiType('claude')">Claude (Anthropic)</button>
+        <button class="toggle-btn" id="btn-openrouter" onclick="setApiType('openrouter')">OpenRouter</button>
+      </div>
+      <div class="form-grid cols-1">
+        <div class="form-group">
+          <label id="key-label">ANTHROPIC API KEY</label>
+          <input type="password" id="api-key" placeholder="sk-ant-..." autocomplete="off">
+        </div>
+        <div class="form-group" id="model-row" style="display:none">
+          <label>OPENROUTER MODEL</label>
+          <input type="text" id="openrouter-model" value="anthropic/claude-sonnet-4-5" placeholder="anthropic/claude-sonnet-4-5">
+        </div>
+      </div>
+      <p class="hint">Your API key is stored only in your browser's localStorage and never transmitted to any third-party server.</p>
+    </div>
+
+    <div id="err-1" class="error-msg"></div>
+    <button class="btn btn-primary" id="gen-btn" onclick="startGeneration()">Generate Sales Page →</button>
+  </div>
+</div>
+
+<!-- ===== SCREEN 2: GENERATING ===== -->
+<div class="screen" id="screen-2">
+  <div class="container">
+    <div class="progress-wrap">
+      <div class="pulse-ring">
+        <div class="spinner" id="main-spinner"></div>
+      </div>
+      <div class="progress-title" id="prog-title">Analyzing your pitch…</div>
+      <div class="progress-subtitle" id="prog-sub">This takes about 20–35 seconds</div>
+
+      <div class="steps-list">
+        <div class="p-step" id="ps-1">
+          <div class="p-step-icon" id="psi-1">1</div>
+          <span>Reading your website</span>
+        </div>
+        <div class="p-step" id="ps-2">
+          <div class="p-step-icon" id="psi-2">2</div>
+          <span>Reading prospect's website</span>
+        </div>
+        <div class="p-step" id="ps-3">
+          <div class="p-step-icon" id="psi-3">3</div>
+          <span>Crafting personalized content</span>
+        </div>
+        <div class="p-step" id="ps-4">
+          <div class="p-step-icon" id="psi-4">4</div>
+          <span>Building your microsite</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SCREEN 3: RESULT ===== -->
+<div class="screen" id="screen-3">
+  <div class="container">
+    <div class="result-badge">✓ Ready to share</div>
+    <h1>Your page is <em>live</em></h1>
+    <p class="subtitle" id="res-sub">Personalized for your prospect</p>
+
+    <!-- Download -->
+    <div class="result-card">
+      <div class="card-title">↓ Download your microsite</div>
+      <div class="card-sub">A single self-contained HTML file. Open in any browser, host anywhere.</div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="downloadHtml()" style="margin-top:0">Download index.html</button>
+        <button class="btn btn-secondary" onclick="previewPage()" style="flex:0;padding:13px 18px">Preview</button>
+      </div>
+    </div>
+
+    <!-- Deploy -->
+    <div class="result-card">
+      <div class="card-title">📡 Deploy to the web</div>
+      <div class="card-sub">Get an instant public URL using pinme (IPFS-based, no account needed):</div>
+
+      <div class="code-block" id="deploy-cmd">npx pinme upload ./index.html</div>
+
+      <div class="btn-row" style="margin-bottom:12px">
+        <button class="btn btn-green" onclick="tryAutoDeployGlitter()">⚡ Auto-deploy via Glitter IPFS</button>
+      </div>
+
+      <div class="deploy-progress" id="deploy-prog">
+        <div class="mini-spinner"></div>
+        <span id="deploy-prog-msg">Initializing upload…</span>
+      </div>
+
+      <div class="deployed-url" id="deployed-url-row">
+        <a id="deployed-link" href="#" target="_blank"></a>
+        <button class="copy-btn" title="Copy URL" onclick="copyDeployedUrl()">⧉</button>
+      </div>
+
+      <div class="separator"></div>
+
+      <div class="card-title" style="margin-bottom:6px">Or enter your URL to get a QR code</div>
+      <div class="url-row">
+        <input type="url" id="manual-url" placeholder="https://your-deployed-url.com">
+        <button class="btn btn-outline" onclick="generateQrFromInput()">QR →</button>
+      </div>
+
+      <!-- QR Code -->
+      <div class="qr-container" id="qr-container">
+        <div class="qr-label">Scan to view your personalized page</div>
+        <div id="qrcode"></div>
+        <div class="qr-sub">Share this QR code at your meeting</div>
+        <button class="btn btn-secondary" onclick="downloadQr()" style="color:#222;border-color:#ccc;background:#f9f9f9;font-size:13px;padding:10px 20px;margin-top:4px">Download QR Code</button>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:20px">
+      <button class="btn btn-secondary" onclick="startOver()" style="font-size:13px;padding:10px 20px">← Generate Another</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ================================================
+//  OUTREACH GENERATOR  — All-in-one app logic
+// ================================================
+
+// ---- State ----
+const S = {
+  apiType: 'claude',
+  sellerContent: '',
+  prospectContent: '',
+  data: null,
+  html: '',
+  deployedUrl: '',
+};
+
+// ---- Restore saved config ----
+window.addEventListener('DOMContentLoaded', () => {
+  try {
+    const c = JSON.parse(localStorage.getItem('og_config') || '{}');
+    if (c.key) document.getElementById('api-key').value = c.key;
+    if (c.name) document.getElementById('seller-name').value = c.name;
+    if (c.email) document.getElementById('seller-email').value = c.email;
+    if (c.phone) document.getElementById('seller-phone').value = c.phone;
+    if (c.apiType) setApiType(c.apiType);
+  } catch(e) {}
+});
+
+// ---- API type toggle ----
+function setApiType(t) {
+  S.apiType = t;
+  document.getElementById('btn-claude').classList.toggle('active', t === 'claude');
+  document.getElementById('btn-openrouter').classList.toggle('active', t === 'openrouter');
+  document.getElementById('key-label').textContent = t === 'claude' ? 'ANTHROPIC API KEY' : 'OPENROUTER API KEY';
+  document.getElementById('api-key').placeholder = t === 'claude' ? 'sk-ant-...' : 'sk-or-...';
+  document.getElementById('model-row').style.display = t === 'openrouter' ? '' : 'none';
+}
+
+// ---- Screen nav ----
+function showScreen(n) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + n).classList.add('active');
+  window.scrollTo(0, 0);
+  ['dot-1','dot-2','dot-3'].forEach((id, i) => {
+    const d = document.getElementById(id);
+    d.classList.toggle('done', i + 1 < n);
+    d.classList.toggle('active', i + 1 === n);
+  });
+}
+
+// ---- Progress steps ----
+function pStep(id, status) {
+  const el = document.getElementById('ps-' + id);
+  const icon = document.getElementById('psi-' + id);
+  el.classList.remove('active','done');
+  if (status === 'active') { el.classList.add('active'); }
+  if (status === 'done')   { el.classList.add('done'); icon.textContent = '✓'; }
+}
+
+// ---- Error helpers ----
+function showErr(id, msg) {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.classList.add('show');
+}
+function clearErr(id) { document.getElementById(id).classList.remove('show'); }
+
+// ---- Validate ----
+function validate() {
+  if (!document.getElementById('seller-url').value.trim()) return 'Please enter your website URL.';
+  if (!document.getElementById('prospect-url').value.trim()) return "Please enter the prospect's website URL.";
+  if (!document.getElementById('seller-name').value.trim()) return 'Please enter your name.';
+  if (!document.getElementById('seller-email').value.trim()) return 'Please enter your email address.';
+  if (!document.getElementById('api-key').value.trim()) return 'Please enter your API key.';
+  return null;
+}
+
+// ---- Fetch website content via CORS proxies ----
+async function fetchContent(url) {
+  const proxies = [
+    u => `https://corsproxy.io/?${encodeURIComponent(u)}`,
+    u => `https://api.allorigins.win/get?url=${encodeURIComponent(u)}`,
+  ];
+  for (const p of proxies) {
+    try {
+      const r = await fetch(p(url), { signal: AbortSignal.timeout(12000) });
+      if (!r.ok) continue;
+      let raw;
+      if (p(url).includes('allorigins')) {
+        const j = await r.json();
+        raw = j.contents || '';
+      } else {
+        raw = await r.text();
+      }
+      return cleanHtml(raw);
+    } catch(e) { /* try next proxy */ }
+  }
+  return `[Website: ${url} — content unavailable, infer from URL]`;
+}
+
+function cleanHtml(h) {
+  return h
+    .replace(/<script[\s\S]*?<\/script>/gi, '')
+    .replace(/<style[\s\S]*?<\/style>/gi, '')
+    .replace(/<svg[\s\S]*?<\/svg>/gi, '')
+    .replace(/<nav[\s\S]*?<\/nav>/gi, '')
+    .replace(/<footer[\s\S]*?<\/footer>/gi, '')
+    .replace(/<!--[\s\S]*?-->/g, '')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;/g, ' ').replace(/&amp;/g,'&').replace(/&lt;/g,'<')
+    .replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&#39;/g,"'")
+    .replace(/\s+/g, ' ').trim().substring(0, 6000);
+}
+
+// ---- AI call (Claude or OpenRouter) ----
+async function callAI(prompt) {
+  const key = document.getElementById('api-key').value.trim();
+
+  if (S.apiType === 'claude') {
+    const r = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': key,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true',
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-5',
+        max_tokens: 4096,
+        messages: [{ role: 'user', content: prompt }],
+      }),
+    });
+    if (!r.ok) {
+      const e = await r.json().catch(() => ({}));
+      throw new Error(e.error?.message || `API error ${r.status}`);
+    }
+    return (await r.json()).content[0].text;
+
+  } else {
+    const model = document.getElementById('openrouter-model').value.trim() || 'anthropic/claude-sonnet-4-5';
+    const r = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${key}`,
+        'HTTP-Referer': window.location.href,
+        'X-Title': 'Outreach Generator',
+      },
+      body: JSON.stringify({
+        model,
+        max_tokens: 4096,
+        messages: [{ role: 'user', content: prompt }],
+      }),
+    });
+    if (!r.ok) {
+      const e = await r.json().catch(() => ({}));
+      throw new Error(e.error?.message || `OpenRouter error ${r.status}`);
+    }
+    return (await r.json()).choices[0].message.content;
+  }
+}
+
+// ---- Build analysis prompt ----
+function buildPrompt() {
+  const name  = document.getElementById('seller-name').value.trim();
+  const email = document.getElementById('seller-email').value.trim();
+  const phone = document.getElementById('seller-phone').value.trim();
+  return `You are an elite B2B sales content strategist. Your job: analyze a salesperson's product and their prospect, then craft 3 pages of a personalized microsite that feels genuinely hand-crafted — not templated.
+
+## SALESPERSON WEBSITE
+URL: ${document.getElementById('seller-url').value.trim()}
+CONTENT: ${S.sellerContent}
+
+## PROSPECT WEBSITE
+URL: ${document.getElementById('prospect-url').value.trim()}
+CONTENT: ${S.prospectContent}
+
+## CONTACT INFO
+Name: ${name}
+Email: ${email}${phone ? `\nPhone: ${phone}` : ''}
+
+## INSTRUCTIONS
+Be specific and contextual. Reference the prospect's actual industry, what they do, their likely daily pressures. Write like a senior consultant who's done their homework — confident, commercially astute, human.
+
+Return ONLY valid raw JSON (no markdown fences, no explanation). Use this exact schema:
+
+{
+  "seller": {
+    "name": "Company name",
+    "tagline": "Punchy tagline or core value statement",
+    "productSummary": "1-2 sentence description of what they sell",
+    "targetIndustry": "Primary industry they serve",
+    "valueProps": [
+      {"icon": "⚡", "title": "3-4 word title", "description": "2 sentence description of this value prop"},
+      {"icon": "🎯", "title": "3-4 word title", "description": "2 sentence description"},
+      {"icon": "📈", "title": "3-4 word title", "description": "2 sentence description"}
+    ],
+    "edge": "1 sentence competitive differentiation"
+  },
+  "prospect": {
+    "name": "Company name",
+    "industry": "Industry",
+    "sectors": ["primary sector", "secondary sector"],
+    "challenges": [
+      {"icon": "💢", "title": "Challenge title", "description": "2-3 sentence challenge tailored to their specific context"},
+      {"icon": "⏳", "title": "Challenge title", "description": "2-3 sentence description"},
+      {"icon": "📉", "title": "Challenge title", "description": "2-3 sentence description"}
+    ]
+  },
+  "page1": {
+    "headline": "6-8 word bold headline connecting seller to this prospect's world",
+    "subhead": "Supporting line that speaks to their industry or business",
+    "introParagraph": "2-3 sentences connecting seller capabilities to this specific prospect — reference what they do",
+    "whyYou": "2-3 sentences specifically about why THIS company would benefit — mention their sector or unique situation",
+    "cta": "Short CTA text (e.g., 'Explore the approach')"
+  },
+  "page2": {
+    "headline": "Empathetic challenge headline",
+    "subhead": "Subhead that makes them feel understood",
+    "shift": "2-3 sentences on how this solution changes the game for their situation",
+    "outcomes": [
+      {"metric": "Outcome or metric (e.g. '3× faster')", "label": "Category (e.g. 'Delivery')", "description": "1-sentence benefit"},
+      {"metric": "Outcome or metric", "label": "Category", "description": "1-sentence benefit"},
+      {"metric": "Outcome or metric", "label": "Category", "description": "1-sentence benefit"}
+    ]
+  },
+  "page3": {
+    "headline": "Industry trend headline (bold, 5-7 words)",
+    "trend": "2-3 sentences on the macro shift happening in their industry",
+    "leaders": [
+      {"title": "Type of organization leading this shift", "insight": "What they're doing and concrete results"},
+      {"title": "Another type of leading org", "insight": "What they're doing and concrete results"}
+    ],
+    "earlyAdvantage": "1-2 sentences on what early movers are gaining",
+    "lateRisk": "1-2 sentences on what those who wait risk",
+    "finalCta": "Compelling final call to action line"
+  }
+}`;
+}
+
+// ---- Parse AI response ----
+function parseResponse(text) {
+  let s = text.trim().replace(/^```(?:json)?\s*/,'').replace(/\s*```$/,'');
+  const a = s.indexOf('{'), b = s.lastIndexOf('}');
+  if (a !== -1 && b !== -1) s = s.substring(a, b + 1);
+  return JSON.parse(s);
+}
+
+// ---- Generate output HTML ----
+function generateHtml(d) {
+  const { seller, prospect, page1, page2, page3 } = d;
+  const name  = document.getElementById('seller-name').value.trim();
+  const email = document.getElementById('seller-email').value.trim();
+  const phone = document.getElementById('seller-phone').value.trim();
+
+  const vpCards = seller.valueProps.map(v => `
+    <div class="vp-card r">
+      <div class="vp-icon">${v.icon}</div>
+      <div>
+        <div class="vp-title">${v.title}</div>
+        <div class="vp-desc">${v.description}</div>
+      </div>
+    </div>`).join('');
+
+  const chalCards = prospect.challenges.map(c => `
+    <div class="chal-card r">
+      <div class="chal-icon">${c.icon}</div>
+      <div>
+        <div class="chal-title">${c.title}</div>
+        <div class="chal-desc">${c.description}</div>
+      </div>
+    </div>`).join('');
+
+  const outcomes = page2.outcomes.map(o => `
+    <div class="out-card r">
+      <div class="out-metric">${o.metric}</div>
+      <div class="out-label">${o.label}</div>
+      <div class="out-desc">${o.description}</div>
+    </div>`).join('');
+
+  const leaders = page3.leaders.map(l => `
+    <div class="leader r">
+      <div class="leader-dot"></div>
+      <div>
+        <div class="leader-title">${l.title}</div>
+        <div class="leader-body">${l.insight}</div>
+      </div>
+    </div>`).join('');
+
+  const phoneBtn = phone
+    ? `<a href="tel:${phone}" class="btn-cta btn-cta-outline">📞 ${phone}</a>`
+    : '';
+
+  // NB: The closing </scr + ipt> is split to avoid early termination of the parent script tag
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+  <title>For ${prospect.name} · ${seller.name}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #07090e;
+      --sur: #0d1120;
+      --sur2: #131929;
+      --bdr: rgba(255,255,255,0.07);
+      --ac: #4f6ef7;
+      --ac2: #7c3aed;
+      --gn: #10b981;
+      --rd: #f43f5e;
+      --tx: #f1f5f9;
+      --mt: rgba(241,245,249,0.48);
+      --f: 'Space Grotesk', -apple-system, sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--f); background: var(--bg); color: var(--tx); min-height: 100vh; padding-bottom: 76px; }
+
+    /* TOP BAR */
+    .topbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 99;
+      background: rgba(7,9,14,0.88); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--bdr);
+      padding: 13px 20px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .tb-name { font-size: 14px; font-weight: 700; }
+    .tb-chip {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: rgba(79,110,247,0.13); border: 1px solid rgba(79,110,247,0.22);
+      border-radius: 100px; padding: 4px 12px; font-size: 11px; color: #818cf8; font-weight: 600;
+    }
+
+    /* SECTIONS */
+    .sec { padding: 88px 22px 52px; }
+    .sec + .sec { border-top: 1px solid var(--bdr); }
+
+    /* EYEBROW */
+    .ey {
+      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em;
+      color: var(--ac); margin-bottom: 14px;
+    }
+
+    /* HERO TITLE */
+    .htitle {
+      font-size: clamp(26px, 7.5vw, 38px); font-weight: 700; line-height: 1.15; margin-bottom: 14px;
+      background: linear-gradient(140deg, var(--tx) 40%, rgba(241,245,249,0.6));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hsub { font-size: 16px; color: var(--mt); line-height: 1.6; margin-bottom: 26px; }
+
+    /* INTRO BLOCK */
+    .intro-block {
+      background: var(--sur); border: 1px solid var(--bdr); border-left: 3px solid var(--ac);
+      border-radius: 0 12px 12px 0; padding: 18px 20px;
+      font-size: 15px; line-height: 1.68; color: rgba(241,245,249,0.82); margin-bottom: 30px;
+    }
+
+    /* SECTION LABEL */
+    .slabel { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--mt); margin-bottom: 14px; }
+
+    /* VALUE PROP CARDS */
+    .vp-card {
+      display: flex; gap: 14px; align-items: flex-start;
+      background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 15px;
+      margin-bottom: 10px; transition: border-color 0.2s, transform 0.25s;
+    }
+    .vp-card:hover { border-color: rgba(79,110,247,0.28); transform: translateX(4px); }
+    .vp-icon { font-size: 22px; flex-shrink: 0; line-height: 1; }
+    .vp-title { font-size: 14px; font-weight: 700; margin-bottom: 5px; }
+    .vp-desc { font-size: 13px; color: var(--mt); line-height: 1.55; }
+
+    /* WHY BOX */
+    .why-box {
+      background: linear-gradient(135deg, rgba(79,110,247,0.09), rgba(124,58,237,0.06));
+      border: 1px solid rgba(79,110,247,0.14); border-radius: 12px; padding: 20px; margin: 24px 0 20px;
+    }
+    .why-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: #818cf8; margin-bottom: 10px; }
+    .why-body { font-size: 14px; line-height: 1.65; color: rgba(241,245,249,0.78); }
+
+    /* PRIMARY CTA */
+    .cta-main {
+      display: block; text-align: center; background: var(--ac); color: white;
+      padding: 15px 24px; border-radius: 12px; font-size: 16px; font-weight: 600;
+      text-decoration: none; transition: all 0.2s; width: 100%;
+      border: none; cursor: pointer; font-family: var(--f);
+    }
+    .cta-main:hover { background: #3d5af5; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(79,110,247,0.38); }
+
+    /* CHALLENGE CARDS */
+    .chal-card {
+      display: flex; gap: 14px; align-items: flex-start;
+      background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 16px; margin-bottom: 11px;
+    }
+    .chal-icon { font-size: 22px; flex-shrink: 0; line-height: 1; }
+    .chal-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+    .chal-desc { font-size: 13px; color: var(--mt); line-height: 1.55; }
+
+    /* SHIFT */
+    .shift-box {
+      background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 20px; margin: 26px 0;
+    }
+    .shift-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--gn); margin-bottom: 10px; }
+    .shift-body { font-size: 14px; line-height: 1.65; color: rgba(241,245,249,0.8); }
+
+    /* OUTCOMES */
+    .out-row {
+      display: flex; gap: 10px; overflow-x: auto; padding-bottom: 6px; margin: 20px 0 10px;
+      scrollbar-width: none;
+    }
+    .out-row::-webkit-scrollbar { display: none; }
+    .out-card {
+      min-width: 130px; flex-shrink: 0; background: var(--sur); border: 1px solid var(--bdr);
+      border-radius: 12px; padding: 16px 14px; text-align: center;
+    }
+    .out-metric {
+      font-size: 22px; font-weight: 700;
+      background: linear-gradient(135deg, var(--ac), #a78bfa);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      line-height: 1.2; margin-bottom: 5px;
+    }
+    .out-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--mt); margin-bottom: 6px; }
+    .out-desc { font-size: 11px; color: var(--mt); line-height: 1.4; }
+
+    /* TREND */
+    .trend-box {
+      background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 20px; margin: 20px 0 28px;
+      font-size: 15px; line-height: 1.68; color: rgba(241,245,249,0.82);
+    }
+    .leader {
+      display: flex; gap: 14px; align-items: flex-start;
+      padding: 15px 0; border-bottom: 1px solid var(--bdr);
+    }
+    .leader:last-child { border-bottom: none; }
+    .leader-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ac); flex-shrink: 0; margin-top: 5px; }
+    .leader-title { font-size: 13px; font-weight: 700; color: #818cf8; margin-bottom: 5px; }
+    .leader-body { font-size: 13px; color: var(--mt); line-height: 1.55; }
+
+    /* GAP GRID */
+    .gap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 20px 0 28px; }
+    .gap-card { background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 16px; }
+    .gap-card-title { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+    .gap-card.early .gap-card-title { color: var(--gn); }
+    .gap-card.late .gap-card-title { color: var(--rd); }
+    .gap-card-body { font-size: 12px; color: var(--mt); line-height: 1.5; }
+
+    /* CONTACT */
+    .contact-box {
+      background: linear-gradient(135deg, rgba(79,110,247,0.1), rgba(124,58,237,0.07));
+      border: 1px solid rgba(79,110,247,0.15); border-radius: 16px;
+      padding: 28px 22px; text-align: center; margin-top: 28px;
+    }
+    .contact-name { font-size: 20px; font-weight: 700; margin-bottom: 5px; }
+    .contact-co { font-size: 13px; color: var(--mt); margin-bottom: 8px; }
+    .contact-cta { font-size: 14px; color: rgba(241,245,249,0.7); line-height: 1.6; margin-bottom: 22px; }
+    .btn-cta {
+      display: block; text-decoration: none; text-align: center;
+      padding: 14px 20px; border-radius: 12px; font-size: 15px; font-weight: 600;
+      font-family: var(--f); transition: all 0.2s; margin-bottom: 10px;
+    }
+    .btn-cta-solid { background: var(--ac); color: white; }
+    .btn-cta-solid:hover { background: #3d5af5; transform: translateY(-1px); }
+    .btn-cta-outline { background: transparent; color: var(--tx); border: 1px solid var(--bdr); }
+    .btn-cta-outline:hover { border-color: rgba(255,255,255,0.2); }
+
+    /* BOTTOM NAV */
+    .bnav {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 99;
+      background: rgba(7,9,14,0.94); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid var(--bdr); padding: 10px 12px 16px;
+      display: flex; justify-content: space-around;
+    }
+    .ntab {
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      padding: 7px 18px; border-radius: 10px; cursor: pointer;
+      border: none; background: none; color: var(--mt); font-family: var(--f);
+      text-decoration: none; transition: all 0.2s;
+    }
+    .ntab.active { color: var(--ac); background: rgba(79,110,247,0.1); }
+    .ntab-ic { font-size: 18px; line-height: 1; }
+    .ntab-lb { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+
+    /* REVEAL ANIMATION */
+    .r { opacity: 0; transform: translateY(18px); transition: opacity 0.5s ease, transform 0.5s ease; }
+    .r.vis { opacity: 1; transform: none; }
+
+    /* DIVIDER */
+    .div { height: 1px; background: var(--bdr); margin: 26px 0; }
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="tb-name">${seller.name}</div>
+  <div class="tb-chip">✦ For ${prospect.name}</div>
+</div>
+
+<!-- ===== PAGE 1: INTRO ===== -->
+<section class="sec" id="sec-intro">
+  <div class="ey">Prepared for ${prospect.name} · ${prospect.industry}</div>
+  <h1 class="htitle">${page1.headline}</h1>
+  <p class="hsub">${page1.subhead}</p>
+
+  <div class="intro-block r">${page1.introParagraph}</div>
+
+  <div class="slabel">What we do</div>
+  ${vpCards}
+
+  <div class="why-box r">
+    <div class="why-title">Why ${prospect.name}</div>
+    <div class="why-body">${page1.whyYou}</div>
+  </div>
+
+  <a href="#sec-challenges" class="cta-main">${page1.cta} →</a>
+</section>
+
+<!-- ===== PAGE 2: CHALLENGES ===== -->
+<section class="sec" id="sec-challenges">
+  <div class="ey">Understanding your world</div>
+  <h1 class="htitle">${page2.headline}</h1>
+  <p class="hsub">${page2.subhead}</p>
+
+  ${chalCards}
+
+  <div class="shift-box r">
+    <div class="shift-title">The shift we enable</div>
+    <div class="shift-body">${page2.shift}</div>
+  </div>
+
+  <div class="slabel">The outcome for your team</div>
+  <div class="out-row">
+    ${outcomes}
+  </div>
+
+  <a href="#sec-trends" class="cta-main" style="margin-top:20px">See the bigger picture →</a>
+</section>
+
+<!-- ===== PAGE 3: TRENDS ===== -->
+<section class="sec" id="sec-trends">
+  <div class="ey">Industry intelligence</div>
+  <h1 class="htitle">${page3.headline}</h1>
+
+  <div class="trend-box r">${page3.trend}</div>
+
+  <div class="slabel">Who's leading</div>
+  <div style="margin-bottom:28px">
+    ${leaders}
+  </div>
+
+  <div class="slabel">The widening gap</div>
+  <div class="gap-grid">
+    <div class="gap-card early r">
+      <div class="gap-card-title">Early movers</div>
+      <div class="gap-card-body">${page3.earlyAdvantage}</div>
+    </div>
+    <div class="gap-card late r">
+      <div class="gap-card-title">Late adopters</div>
+      <div class="gap-card-body">${page3.lateRisk}</div>
+    </div>
+  </div>
+
+  <div class="contact-box r">
+    <div class="contact-name">${name}</div>
+    <div class="contact-co">${seller.name} · ${seller.targetIndustry}</div>
+    <div class="contact-cta">${page3.finalCta}</div>
+    <a href="mailto:${email}" class="btn-cta btn-cta-solid">✉ ${email}</a>
+    ${phoneBtn}
+  </div>
+</section>
+
+<!-- BOTTOM NAV -->
+<nav class="bnav" id="bnav">
+  <a href="#sec-intro" class="ntab active" data-sec="sec-intro" onclick="setTab(this)">
+    <span class="ntab-ic">✦</span>
+    <span class="ntab-lb">Intro</span>
+  </a>
+  <a href="#sec-challenges" class="ntab" data-sec="sec-challenges" onclick="setTab(this)">
+    <span class="ntab-ic">⚡</span>
+    <span class="ntab-lb">Challenge</span>
+  </a>
+  <a href="#sec-trends" class="ntab" data-sec="sec-trends" onclick="setTab(this)">
+    <span class="ntab-ic">📈</span>
+    <span class="ntab-lb">Trends</span>
+  </a>
+</nav>
+
+<script>
+  // Reveal on scroll
+  const obs = new IntersectionObserver(es => {
+    es.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.r').forEach(el => obs.observe(el));
+
+  // Tab active state
+  function setTab(el) {
+    document.querySelectorAll('.ntab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // Update tab on scroll
+  const secs = ['sec-intro','sec-challenges','sec-trends'];
+  const secEls = secs.map(id => document.getElementById(id));
+  const tabs = document.querySelectorAll('.ntab');
+  const scrollObs = new IntersectionObserver(es => {
+    es.forEach(e => {
+      if (e.isIntersecting) {
+        const i = secs.indexOf(e.target.id);
+        tabs.forEach((t,j) => t.classList.toggle('active', i === j));
+      }
+    });
+  }, { threshold: 0.45 });
+  secEls.forEach(el => scrollObs.observe(el));
+<\/script>
+</body>
+</html>`;
+}
+
+// ---- Glitter IPFS upload ----
+async function uploadToGlitter(htmlContent) {
+  const BASE = 'https://ipfs.glitterprotocol.dev/api/v2';
+  const uid = crypto.randomUUID ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    const r = Math.random() * 16 | 0;
+    return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+  });
+
+  const blob = new Blob([htmlContent], { type: 'text/html' });
+  const bytes = new Uint8Array(await blob.arrayBuffer());
+
+  // Step 1: Init
+  const initRes = await fetch(`${BASE}/chunk/init`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      file_name: 'index.html',
+      file_size: bytes.length,
+      md5: '',
+      is_dir: false,
+      uid
+    }),
+  });
+  if (!initRes.ok) throw new Error(`Init failed: ${initRes.status}`);
+  const { data: initData } = await initRes.json();
+  const { session_id, chunk_size = 2097152, total_chunks = 1 } = initData;
+
+  // Step 2: Upload chunks
+  for (let i = 0; i < total_chunks; i++) {
+    const start = i * chunk_size;
+    const end = Math.min(start + chunk_size, bytes.length);
+    const chunk = bytes.slice(start, end);
+    const fd = new FormData();
+    fd.append('session_id', session_id);
+    fd.append('index', String(i));
+    fd.append('uid', uid);
+    fd.append('chunk', new Blob([chunk]));
+    const upRes = await fetch(`${BASE}/chunk/upload`, { method: 'POST', body: fd });
+    if (!upRes.ok) throw new Error(`Upload chunk ${i} failed`);
+  }
+
+  // Step 3: Complete
+  const completeRes = await fetch(`${BASE}/chunk/complete`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ session_id, uid }),
+  });
+  if (!completeRes.ok) throw new Error(`Complete failed: ${completeRes.status}`);
+  const { data: compData } = await completeRes.json();
+  const { trace_id } = compData;
+
+  // Step 4: Poll for URL
+  for (let attempt = 0; attempt < 90; attempt++) {
+    await new Promise(r => setTimeout(r, 3000));
+    const statusRes = await fetch(`${BASE}/up_status?trace_id=${trace_id}&uid=${uid}`);
+    if (!statusRes.ok) continue;
+    const { data: sd } = await statusRes.json();
+    if (sd && sd.short_url) return sd.short_url;
+    if (sd && sd.hash) return `https://pinme.eth.limo/#/preview/${sd.hash}`;
+  }
+  throw new Error('Timed out waiting for deployed URL');
+}
+
+// ---- Auto-deploy handler ----
+async function tryAutoDeployGlitter() {
+  const prog = document.getElementById('deploy-prog');
+  const progMsg = document.getElementById('deploy-prog-msg');
+  const urlRow = document.getElementById('deployed-url-row');
+  const link = document.getElementById('deployed-link');
+
+  prog.classList.add('show');
+  progMsg.textContent = 'Connecting to IPFS…';
+  urlRow.classList.remove('show');
+
+  try {
+    progMsg.textContent = 'Uploading to Glitter IPFS…';
+    const url = await uploadToGlitter(S.html);
+    S.deployedUrl = url;
+    link.textContent = url;
+    link.href = url;
+    urlRow.classList.add('show');
+    prog.classList.remove('show');
+    // Populate manual URL and auto-generate QR
+    document.getElementById('manual-url').value = url;
+    generateQrFromInput();
+  } catch(err) {
+    prog.classList.remove('show');
+    const errEl = document.getElementById('err-deploy');
+    if (errEl) { errEl.textContent = `Auto-deploy failed: ${err.message}. Use the pinme command above instead.`; errEl.classList.add('show'); }
+    else {
+      const div = document.createElement('div');
+      div.id = 'err-deploy';
+      div.className = 'error-msg show';
+      div.textContent = `Auto-deploy failed: ${err.message}. Use the pinme command above instead.`;
+      document.getElementById('deploy-prog').insertAdjacentElement('afterend', div);
+    }
+  }
+}
+
+function copyDeployedUrl() {
+  const url = document.getElementById('deployed-link').textContent;
+  navigator.clipboard.writeText(url).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    const orig = btn.textContent;
+    btn.textContent = '✓';
+    setTimeout(() => btn.textContent = orig, 1500);
+  });
+}
+
+// ---- QR code ----
+function generateQrFromInput() {
+  const url = document.getElementById('manual-url').value.trim();
+  if (!url) return;
+  const qrDiv = document.getElementById('qrcode');
+  qrDiv.innerHTML = '';
+  new QRCode(qrDiv, {
+    text: url, width: 200, height: 200,
+    colorDark: '#000', colorLight: '#fff',
+    correctLevel: QRCode.CorrectLevel.H,
+  });
+  const c = document.getElementById('qr-container');
+  c.classList.add('show');
+  c.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function downloadQr() {
+  const canvas = document.querySelector('#qrcode canvas');
+  if (!canvas) return;
+  const a = document.createElement('a');
+  const slug = (S.data?.prospect?.name || 'outreach').toLowerCase().replace(/\s+/g,'-');
+  a.download = `qr-${slug}.png`;
+  a.href = canvas.toDataURL('image/png');
+  a.click();
+}
+
+// ---- Download HTML ----
+function downloadHtml() {
+  const slug = (S.data?.prospect?.name || 'prospect').toLowerCase().replace(/\s+/g,'-');
+  const blob = new Blob([S.html], { type: 'text/html' });
+  const a = document.createElement('a');
+  a.download = `outreach-${slug}.html`;
+  a.href = URL.createObjectURL(blob);
+  a.click();
+  URL.revokeObjectURL(a.href);
+  // Update deploy command with actual filename
+  document.getElementById('deploy-cmd').textContent = `npx pinme upload ./outreach-${slug}.html`;
+}
+
+// ---- Preview in new tab ----
+function previewPage() {
+  const blob = new Blob([S.html], { type: 'text/html' });
+  const url = URL.createObjectURL(blob);
+  window.open(url, '_blank');
+}
+
+// ---- Start over ----
+function startOver() {
+  S.data = null; S.html = ''; S.sellerContent = ''; S.prospectContent = ''; S.deployedUrl = '';
+  document.getElementById('qr-container').classList.remove('show');
+  document.getElementById('deployed-url-row').classList.remove('show');
+  document.getElementById('qrcode').innerHTML = '';
+  document.getElementById('manual-url').value = '';
+  const errDeploy = document.getElementById('err-deploy');
+  if (errDeploy) errDeploy.remove();
+  showScreen(1);
+}
+
+// ---- Main generation flow ----
+async function startGeneration() {
+  const err = validate();
+  if (err) { showErr('err-1', err); return; }
+  clearErr('err-1');
+
+  // Save config
+  try {
+    localStorage.setItem('og_config', JSON.stringify({
+      key: document.getElementById('api-key').value.trim(),
+      name: document.getElementById('seller-name').value.trim(),
+      email: document.getElementById('seller-email').value.trim(),
+      phone: document.getElementById('seller-phone').value.trim(),
+      apiType: S.apiType,
+    }));
+  } catch(e) {}
+
+  showScreen(2);
+
+  try {
+    // Step 1: Fetch seller website
+    pStep(1, 'active');
+    S.sellerContent = await fetchContent(document.getElementById('seller-url').value.trim());
+    pStep(1, 'done');
+
+    // Step 2: Fetch prospect website
+    pStep(2, 'active');
+    S.prospectContent = await fetchContent(document.getElementById('prospect-url').value.trim());
+    pStep(2, 'done');
+
+    // Step 3: AI analysis
+    pStep(3, 'active');
+    document.getElementById('prog-title').textContent = 'Crafting your pitch…';
+    const raw = await callAI(buildPrompt());
+    S.data = parseResponse(raw);
+    pStep(3, 'done');
+
+    // Step 4: Build HTML
+    pStep(4, 'active');
+    document.getElementById('prog-title').textContent = 'Building your microsite…';
+    S.html = generateHtml(S.data);
+    pStep(4, 'done');
+
+    // Show result
+    document.getElementById('res-sub').textContent =
+      `Personalized for ${S.data.prospect.name} · ${S.data.prospect.industry}`;
+    showScreen(3);
+
+  } catch(err) {
+    document.getElementById('main-spinner').style.animation = 'none';
+    document.getElementById('main-spinner').style.borderTopColor = '#f43f5e';
+    document.getElementById('prog-title').textContent = 'Something went wrong';
+    document.getElementById('prog-sub').textContent = err.message;
+  }
+}
+</script>
+
+</body>
+</html>
