@@ -9,6 +9,7 @@ These are the steps you should follow:
 1. Understand the context of the Seller and the Prospect, by studying the provided URLs, use browser automation tools to extract the information.
 2. Use sub-agent to identify prospect's challenges and pain points.
 3. Generate the markdown sales collateral.
+4. Generate a personalised landing page from the markdown collateral.
 
 # Step-1: Understand the seller and prospect:
 You must first understand the context of the Seller and the Prospect, by studying the provided URLs, use browser automation tools to extract the information.
@@ -156,3 +157,38 @@ Objective: Use social proof and market trends to advocate for adoption.
 
 ---
 *Prepared for [Prospect Representative] by [Salesperson Name]*
+
+# Step-4: Generate personalised landing page
+With the 3 markdown files from Step-3 now complete, generate a mobile-first, sales-oriented HTML landing page that a prospect can read and understand in under 3 minutes.
+
+## Instructions
+1. Read the 3 output markdown files generated in Step-3:
+   - `01_Value_Proposition.md`
+   - `02_Solution_Fit.md`
+   - `03_Industry_Trends.md`
+2. Read the HTML template at `{./References/landing_page_template.md}`.
+3. Follow the **Placeholder Mapping** table in the template to extract the right content from each markdown file.
+4. For each `{{PLACEHOLDER}}`, synthesise the markdown content into concise, scannable copy optimised for the web (not a direct copy-paste of the markdown).
+5. Render all multi-item sections (value props, engagement steps, challenges, outcomes, recommendations, next steps) using the **Component Patterns** defined at the bottom of the template.
+6. Save the final output as `landing_page.html` in the project root.
+
+## Content Guidelines
+- **Headlines**: Derive punchy, 6-10 word headlines from the markdown content — do not use the markdown headers verbatim.
+- **Body copy**: Rewrite for scannability. Use short sentences, no jargon, and active voice.
+- **Challenges section**: Each challenge card must include Pain, Solution, and ROI rows.
+- **Outcomes**: Extract 3 quantifiable metrics from the Expected ROI values. If the markdown uses qualitative language (e.g. "measurable reduction"), infer a reasonable metric.
+- **CTAs**: Each section should end with a contextual call-to-action that leads the reader forward.
+
+## Output Requirements
+- The output must be a **single self-contained HTML file** with all CSS and JS inline (no external dependencies except Google Fonts).
+- The page must render correctly on mobile (375px width) and desktop.
+- The bottom navigation must highlight the active section on scroll.
+- All `.r` (reveal) elements must animate in on scroll.
+
+## Checklist
+- [ ] All placeholders replaced — no `{{...}}` tokens remain in the output
+- [ ] Page loads and renders with dark theme
+- [ ] Bottom nav correctly switches between 3 sections
+- [ ] All cards are populated with personalised content
+- [ ] Contact section has correct email (and phone if provided)
+- [ ] Page is readable in under 3 minutes
