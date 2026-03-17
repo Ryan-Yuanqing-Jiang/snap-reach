@@ -4,6 +4,32 @@ This reference provides the **design tokens, page scaffold, and component catalo
 
 ---
 
+## 0. Theme System
+
+Every generated page uses a **design theme** that controls colours, fonts, and accent tints via CSS custom properties. Theme files live in `./references/design_themes/` — each contains a drop-in `:root` block, a Google Fonts `<link>`, and any component-specific CSS overrides.
+
+### Available Themes
+
+| Theme file | Mode | Accent | Best for |
+|-----------|------|--------|----------|
+| `midnight_blue.md` **(DEFAULT)** | Dark | Blue | Tech, SaaS, AI, consulting |
+| `clean_frost.md` | Light | Cyan / Green | Modern SaaS, fintech, health |
+| `luxury_noir.md` | Dark | Gold | Luxury, fashion, premium brands |
+| `corporate_trust.md` | Light | Navy Blue | Enterprise, govt, finance, legal |
+| `warm_earth.md` | Light | Green / Pink | Wellness, food, organic, retail |
+| `vibrant_tech.md` | Dark | Neon Green | Startups, gaming, dev tools |
+
+### How to Apply a Theme
+
+1. **Open the chosen theme file** (e.g. `clean_frost.md`).
+2. **Replace the `:root { … }` block** in Section 1 below with the theme's `:root` block.
+3. **Replace the Google Fonts `<link>`** in `<head>` with the theme's font link.
+4. **Append the Component Overrides CSS** from the theme file into the `<style>` block — these adjust topbar, bottom nav, gradients, and card surfaces for the theme's light/dark mode.
+
+If no theme is specified, use `midnight_blue.md` — its variables are identical to the defaults in Section 1 below, so no changes are needed.
+
+---
+
 ## 1. Design Tokens & Base Styles
 
 All pages share these CSS custom properties, fonts, and reset styles. Include them verbatim in every generated page.

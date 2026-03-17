@@ -190,6 +190,15 @@ Read all available markdown files and inventory their structure:
 - `./md_files/[prospect-slug]/03_Industry_Trends.md` — note the number of recommendation bullets; check for multiple trends or a single one.
 - `Steps/prospect_challenges.md` — check for any additional operational insights that weren't captured in the 3 files above.
 
+## Phase 1.5 — Select Design Theme
+Pick a design theme from `./references/design_themes/` using this priority:
+
+1. **Match the prospect's website** — if you visited the prospect's URL in Step-1, identify the dominant visual tone (dark/light mode, accent colour family, industry feel) and compare it against the **Best-for Keywords** in each theme file. Select the closest match.
+2. **Match the seller's brand** — if the prospect's website design is not available or not distinctive enough to match confidently, use the seller's primary brand colour and website aesthetic to pick the theme whose accent colours and mood are closest.
+3. **Default** — if neither signal is available, use `midnight_blue.md`.
+
+Record the chosen theme name in your Phase 2 plan. You will apply its CSS variables, Google Fonts link, and Component Overrides when composing the HTML in Phase 3.
+
 ## Phase 2 — Plan the page layout
 Based on the inventory above, decide the page sections and sub-components:
 - **Default structure**: 3 sections (Value · Fit · Trends) — this is the recommended baseline, but you may split, merge, or reorder sections if the content warrants it (e.g. if there are many challenges, consider giving them a dedicated expanded section).
@@ -198,7 +207,7 @@ Based on the inventory above, decide the page sections and sub-components:
 
 ## Phase 3 — Compose the HTML
 Build the final HTML file using the **Page Scaffold**, **Section Shell**, and **Component Catalog** from the Design System Reference:
-1. Start with the Page Scaffold (doctype, head, CSS variables, top bar, bottom nav, JS).
+1. Start with the Page Scaffold (doctype, head, CSS variables, top bar, bottom nav, JS). **Apply the chosen theme** by replacing the `:root` block and Google Fonts `<link>` with the values from the selected theme file, and appending any Component Overrides CSS from the theme.
 2. For each planned section, use the Section Shell pattern and fill it with chosen components.
 3. Populate each component with content rewritten from the markdown files (see Content Guidelines below).
 4. Save the final output as `./pages/landing_page_[prospect-slug].html` in the project root.
@@ -217,7 +226,8 @@ Build the final HTML file using the **Page Scaffold**, **Section Shell**, and **
 - All `.r` (reveal) elements must animate in on scroll.
 
 ## Checklist
-- [ ] Page loads and renders with dark theme
+- [ ] Design theme selected and applied (`:root` variables + fonts + component overrides)
+- [ ] Page loads and renders correctly with the chosen theme
 - [ ] Bottom nav correctly highlights active section and switches on scroll
 - [ ] All cards are populated with personalised content (no placeholder tokens remain)
 - [ ] Contact section has correct email (and phone if provided)
