@@ -24,3 +24,22 @@ Now add another step to this Skill, to upload the generated landing page to a fi
 
 ## tasks:
 - Update the skill.md, use pinme to upload the site, and then find the url of the uploaded site, I need the site URL, not the preview page URL. Then use the `generate_qr.py` script to generate a QR code for the landing page. Finally, save the QR code `./qr_codes`
+
+# Design improvement
+
+Now I want to make some improvement to the design and generation of the landing page. 
+
+1. Use ui-ux-pro-max skill, to generate a few design theme (i.e color, font, etc.) 
+2. Update the prompt in SKILL.md to try pick a design theme based on the design and theme of the prospect's website. If it's not available, then try pick a theme using the seller's brand color and website's primary color. 
+
+Requirements:
+- Make a few design theme, and save them in the `design_themes` folder under the `references` folder.
+- Make sure the landing_page_template.html can use these design themes to generate the landing page, driven by the updated SKILL.md prompt.
+- Pick a default theme for the landing page in case a theme is not picked.
+
+---
+
+# finalise
+Help me finalise a few things:
+1. Help me publish or package it so that users can use install it using `npx skills add`
+2. Write a README.md on how to use @beautifulMention, include how to best prompt it, and choose 

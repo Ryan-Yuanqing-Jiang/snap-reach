@@ -17,7 +17,8 @@ You are building a personalized B2B sales microsite — a single HTML file a sal
 **Optional output**: `qr-[prospect-slug].png` — QR code for the deployed URL
 
 # Input: 
-The salesperson will provide their own business URL {seller_url} and a Prospect’s URL/LinkedIn {prospect_url}. 
+The salesperson will provide their own business URL {seller_url} and a Prospect’s URL/LinkedIn {prospect_url}.
+*Optional*: The salesperson may explicitly request a specific design theme from `./references/design_themes/` to be used for the page. 
 
 # Steps
 These are the steps you should follow:
@@ -193,9 +194,10 @@ Read all available markdown files and inventory their structure:
 ## Phase 1.5 — Select Design Theme
 Pick a design theme from `./references/design_themes/` using this priority:
 
-1. **Match the prospect's website** — if you visited the prospect's URL in Step-1, identify the dominant visual tone (dark/light mode, accent colour family, industry feel) and compare it against the **Best-for Keywords** in each theme file. Select the closest match.
-2. **Match the seller's brand** — if the prospect's website design is not available or not distinctive enough to match confidently, use the seller's primary brand colour and website aesthetic to pick the theme whose accent colours and mood are closest.
-3. **Default** — if neither signal is available, use `midnight_blue.md`.
+1. **Explicit Request** — if the user explicitly asked for a specific design theme in their prompt (e.g., "Use the luxury_noir theme"), use that theme.
+2. **Match the prospect's website** — if you visited the prospect's URL in Step-1, identify the dominant visual tone (dark/light mode, accent colour family, industry feel) and compare it against the **Best-for Keywords** in each theme file. Select the closest match.
+3. **Match the seller's brand** — if the prospect's website design is not available or not distinctive enough to match confidently, use the seller's primary brand colour and website aesthetic to pick the theme whose accent colours and mood are closest.
+4. **Default** — if neither signal is available, use `midnight_blue.md`.
 
 Record the chosen theme name in your Phase 2 plan. You will apply its CSS variables, Google Fonts link, and Component Overrides when composing the HTML in Phase 3.
 
