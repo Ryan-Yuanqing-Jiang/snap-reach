@@ -68,12 +68,16 @@ body { font-family: var(--f); background: var(--bg); color: var(--tx); min-heigh
 Every generated page must include these structural elements. The **sections in between** are composed dynamically.
 
 ### Top Bar
-Fixed header showing seller name and prospect personalisation chip.
+Fixed header showing seller name and prospect personalisation chip. If email and/or phone are provided, include them as small text below.
 
 ```html
 <div class="topbar">
-  <div class="tb-name">{Seller Name}</div>
-  <div class="tb-chip">✦ For {Prospect Name}</div>
+  <div class="tb-row-main">
+    <div class="tb-name">{Seller Name}</div>
+    <div class="tb-chip">✦ For {Prospect Name}</div>
+  </div>
+  <!-- Only include if email/phone provided -->
+  <div class="tb-contact">{email} · {phone}</div>
 </div>
 ```
 
@@ -83,9 +87,13 @@ Fixed header showing seller name and prospect personalisation chip.
   background: rgba(7,9,14,0.88); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
   border-bottom: 1px solid var(--bdr);
   padding: 13px 20px;
-  display: flex; align-items: center; justify-content: space-between;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.tb-row-main {
+  display: flex; align-items: center; justify-content: space-between; width: 100%;
 }
 .tb-name { font-size: 14px; font-weight: 700; }
+.tb-contact { font-size: 11px; color: var(--mt); text-align: left; }
 .tb-chip {
   display: inline-flex; align-items: center; gap: 5px;
   background: rgba(79,110,247,0.13); border: 1px solid rgba(79,110,247,0.22);
@@ -197,10 +205,11 @@ Use within a section to introduce a sub-group of components (e.g. "Our competiti
 ```
 
 ### Section CTA
-Place at the bottom of a section to link the reader to the next section.
+Place at the bottom of a section to link the reader to the next section. Always include the secondary link pointing to the final contact/CTA section so it can be easily found.
 
 ```html
 <a href="#sec-{next}" class="cta-main" style="margin-top:24px">{CTA label} →</a>
+<a href="#sec-contact" class="cta-secondary">Skip to {Final CTA label} ↓</a>
 ```
 
 ```css
@@ -210,6 +219,11 @@ Place at the bottom of a section to link the reader to the next section.
   text-decoration: none; transition: all 0.2s; width: 100%; border: none; cursor: pointer; font-family: var(--f);
 }
 .cta-main:hover { background: #3d5af5; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(79,110,247,0.38); }
+.cta-secondary {
+  display: block; text-align: center; color: var(--mt); font-size: 13px; font-weight: 500;
+  text-decoration: none; margin-top: 14px; transition: color 0.2s; font-family: var(--f);
+}
+.cta-secondary:hover { color: var(--tx); }
 ```
 
 ---
@@ -547,16 +561,23 @@ Wrap all outcome cards in a `.out-row` container.
 ---
 
 ### Contact Box
-**When to use:** As the final element in the last section. Includes salesperson name, email, and optional phone.
+**When to use:** As the final element in the last section. Includes salesperson name, the primary CTA, and then email/phone below it.
 
 ```html
-<div class="contact-box r">
+<div class="contact-box r" id="sec-contact">
   <div class="contact-name">{Salesperson name}</div>
   <div class="contact-co">{Seller name} · {Industry}</div>
-  <div class="contact-cta">Let's explore how we can accelerate your growth.</div>
-  <a href="mailto:{email}" class="btn-cta btn-cta-solid">✉ {email}</a>
-  <!-- Optional phone: -->
-  <a href="tel:{phone}" class="btn-cta btn-cta-outline">📞 {phone}</a>
+  <div class="contact-cta">{Call to Action messaging}</div>
+  
+  <!-- Primary CTA Button -->
+  <a href="{CTA destination}" class="btn-cta btn-cta-solid" target="_blank">{CTA Description}</a>
+  
+  <!-- Email & Phone rendered under CTA destination -->
+  <div class="contact-methods">
+    <a href="mailto:{email}" class="btn-contact-small">✉ {email}</a>
+    <!-- Optional phone: -->
+    <a href="tel:{phone}" class="btn-contact-small">📞 {phone}</a>
+  </div>
 </div>
 ```
 
@@ -569,11 +590,12 @@ Wrap all outcome cards in a `.out-row` container.
 .contact-name { font-size: 20px; font-weight: 700; margin-bottom: 5px; }
 .contact-co { font-size: 13px; color: var(--mt); margin-bottom: 8px; }
 .contact-cta { font-size: 14px; color: rgba(241,245,249,0.7); line-height: 1.6; margin-bottom: 22px; }
-.btn-cta { display: block; text-decoration: none; text-align: center; padding: 14px 20px; border-radius: 12px; font-size: 15px; font-weight: 600; font-family: var(--f); transition: all 0.2s; margin-bottom: 10px; }
+.btn-cta { display: block; text-decoration: none; text-align: center; padding: 14px 20px; border-radius: 12px; font-size: 15px; font-weight: 600; font-family: var(--f); transition: all 0.2s; margin-bottom: 16px; }
 .btn-cta-solid { background: var(--ac); color: white; }
 .btn-cta-solid:hover { background: #3d5af5; transform: translateY(-1px); }
-.btn-cta-outline { background: transparent; color: var(--tx); border: 1px solid var(--bdr); }
-.btn-cta-outline:hover { border-color: rgba(255,255,255,0.2); }
+.contact-methods { display: flex; flex-direction: column; gap: 10px; align-items: center; }
+.btn-contact-small { font-size: 13px; color: var(--mt); text-decoration: none; transition: color 0.2s; }
+.btn-contact-small:hover { color: var(--tx); text-decoration: underline; }
 ```
 
 ---

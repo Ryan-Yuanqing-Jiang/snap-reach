@@ -23,11 +23,16 @@ Users can provide the following input:
 - URLs (e.g., LinkedIn profile URL, company website URL).
 - Company or product descriptions. *Note: If the user provides descriptions instead of URLs, you must use web search to identify the correct company and prospect, and use the web search results to supplement the user's input.*
 
-**2. Design Theme:**
+**2. CTA Description and Destination:**
+- Users can explicitly define what Call to Action (CTA) they want to use in the landing page (description and destination link).
+- **Default CTA**: If no CTA description and destination are provided, the default CTA should be "Contact Us", with a link to the seller's website, LinkedIn profile, or email, depending on which is available.
+- **Missing CTA info**: If none of these are available, you must ask the user to provide a CTA before the workflow begins.
+
+**3. Design Theme:**
 - Users can explicitly choose a specific design theme from `./references/design_themes/`.
 - Alternatively, users can provide a few words about the style/design they want, and you should use that instruction to pick the most appropriate theme.
 
-**3. Execution Mode (Auto vs. Interactive):**
+**4. Execution Mode (Auto vs. Interactive):**
 Users can specify whether they want to run in **Auto** or **Interactive** mode.
 - **Auto mode**: Execute all steps sequentially without asking for user feedback once you have the initial input context.
 - **Interactive mode**: Ask for clarifying questions and user feedback at specific steps to guide the generation (see the Interactive Mode Guidelines below).
@@ -242,7 +247,8 @@ Build the final HTML file using the **Page Scaffold**, **Section Shell**, and **
 - **Body copy**: Rewrite for scannability. Use short sentences, no jargon, and active voice.
 - **Challenges section**: Each challenge card must include Pain, Solution, and ROI rows. Rewrite for scannability.
 - **Outcomes**: Extract quantifiable metrics from the Expected ROI values. If the markdown uses qualitative language (e.g. "measurable reduction"), infer a reasonable metric. Keep the copy concise and scannable.
-- **CTAs**: Each section should end with a contextual call-to-action that leads the reader forward.
+- **CTAs**: Each section should end with a contextual call-to-action that leads the reader forward. Also add a secondary, smaller skip link under the main CTA to help users easily find and click the final CTA.
+- **Contact Info**: If the user provided an email and/or phone number, ensure it is present in two places: (1) Rendered as small text in the sticky top bar under the titles, (2) Rendered under the final CTA destination in the Contact Box.
 
 ## Output Requirements
 - The output must be a **single self-contained HTML file** with all CSS and JS inline (no external dependencies except Google Fonts).
@@ -275,7 +281,7 @@ If `npx` or `pinme` isn't available, show the user this command and explain they
    - Look for the live site URL/link in the upload CLI output.
    - If site URL is not present, use a sub-agent (with cheaper model like Haiku or Minimax) to extract the live site URL by using agent-browser to browse the preview URL and extract the live site URL (look for "site link" in the preview page).
 
-## Phase 4 — Generate QR code
+## Phase 3 — Generate QR code
 1. Create the `./qr_codes` directory if it does not exist.
 2. Run the QR code generation script:
    ```
@@ -283,7 +289,7 @@ If `npx` or `pinme` isn't available, show the user this command and explain they
    ```
    Replace `<site_url>` with the direct site URL extracted in Phase 3, and `<prospect-slug>` with the prospect's slug used throughout the skill.
 
-## Phase 5 — Report results
+## Phase 4 — Report results
 Return the following to the user:
 - **Live site URL** (the direct site URL)
 - **QR code file path** (`./qr_codes/qr-<prospect-slug>.png`)
