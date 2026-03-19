@@ -1,3 +1,10 @@
+---
+theme_name: Clean Frost
+mode: Light
+accent_color: Cyan / Green
+vibe: Fresh, modern, minimal, clean
+best_for: modern SaaS, fintech, health, wellness tech, productivity, clean, minimal, light, professional, clinic, medical tech, insurance
+---
 # Clean Frost
 
 > Light, airy glassmorphism theme with cyan and green accents. Feels fresh, modern, and trustworthy.

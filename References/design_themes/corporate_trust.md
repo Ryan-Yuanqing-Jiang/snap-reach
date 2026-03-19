@@ -1,3 +1,10 @@
+---
+theme_name: Corporate Trust
+mode: Light
+accent_color: Navy Blue
+vibe: Authoritative, credible, trustworthy
+best_for: enterprise, corporate, government, finance, banking, insurance, legal, healthcare, pharmaceutical, defence, manufacturing, logistics, professional services, accounting
+---
 # Corporate Trust
 
 > Light, authoritative theme with navy and blue accents. Builds trust and credibility for enterprise audiences.

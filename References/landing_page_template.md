@@ -10,14 +10,16 @@ Every generated page uses a **design theme** that controls colours, fonts, and a
 
 ### Available Themes
 
-| Theme file | Mode | Accent | Best for |
-|-----------|------|--------|----------|
-| `midnight_blue.md` **(DEFAULT)** | Dark | Blue | Tech, SaaS, AI, consulting |
-| `clean_frost.md` | Light | Cyan / Green | Modern SaaS, fintech, health |
-| `luxury_noir.md` | Dark | Gold | Luxury, fashion, premium brands |
-| `corporate_trust.md` | Light | Navy Blue | Enterprise, govt, finance, legal |
-| `warm_earth.md` | Light | Green / Pink | Wellness, food, organic, retail |
-| `vibrant_tech.md` | Dark | Neon Green | Startups, gaming, dev tools |
+Each theme file in `./references/design_themes/` starts with a YAML metadata block detailing its `theme_name`, `mode`, `accent_color`, `vibe`, and `best_for` keywords. Here is a summary of the available themes:
+
+| Theme file | Mode | Accent | Vibe | Best for (`best_for`) |
+|-----------|------|--------|------|------------------------|
+| `midnight_blue.md` **(DEFAULT)** | Dark | Blue | Tech-forward, professional, modern | Tech, SaaS, AI, consulting |
+| `clean_frost.md` | Light | Cyan / Green | Fresh, modern, minimal, clean | Modern SaaS, fintech, health |
+| `luxury_noir.md` | Dark | Gold | Refined, exclusive, premium, elegant | Luxury, fashion, premium brands |
+| `corporate_trust.md` | Light | Navy Blue | Authoritative, credible, trustworthy | Enterprise, govt, finance, legal |
+| `warm_earth.md` | Light | Green / Pink | Organic, approachable, warm, nature-inspired | Wellness, food, organic, retail |
+| `vibrant_tech.md` | Dark | Neon Green | Bold, high-energy, energetic | Startups, gaming, dev tools |
 
 ### How to Apply a Theme
 

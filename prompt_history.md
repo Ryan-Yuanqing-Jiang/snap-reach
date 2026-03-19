@@ -43,3 +43,23 @@ Requirements:
 Help me finalise a few things:
 1. Help me publish or package it so that users can use install it using `npx skills add`
 2. Write a README.md on how to use @beautifulMention, include how to best prompt it, and choose 
+
+---
+
+# Improve
+I want to make the following improvement to the skill:
+
+## Allow more user input:
+Users can provide the following input which will be used to generate the prospect research and landing page:
+1. Design theme: users can either choose a design theme, or say a few words about the style/design she wants to instruct the agent to pick a theme.
+2. Information about the seller and prospect: instead of just providing the URLs, users can also provide the following information:
+- linkedin profile URL, company website URL, company or product description, etc.
+- when user gave company or product descriptions, the agent should use web search to identify the correct company and prospect, and use the information from web search to supplement the user's input.
+3. Auto vs interative modes: users can specify whether they want the agent to ask questions and feedback at different steps, or just run in auto mode. In auto mode, the agent will execute all steps without asking for user feedback once it has enough initial input context. In interactive mode, users can provide feedback at each step to guide the agent's generation.
+
+## Interactive mode: Separate the steps and allow user feedback
+(This is only applicable if users choose interactive mode)
+Interactive mode allows agent to ask clarifying questions and users to provide feedback at each step.
+1. At any steps, if the agent think that it needs more information to produce better results, it should ask the user for clarification or feedback.
+2. After Step 1, 2, 3, agent should concisely present the work done so far, and ask the user for feedback before proceeding to the next step. And user's feedback should be used to refine the work done so far.
+(Note: In interactive mode, the agent should not ask for feedback after Step 4 and Step 5, as these are the final steps and the agent should have enough information to produce the final result.)

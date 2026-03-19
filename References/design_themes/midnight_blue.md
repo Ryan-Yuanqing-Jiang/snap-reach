@@ -1,3 +1,10 @@
+---
+theme_name: Midnight Blue
+mode: Dark
+accent_color: Blue
+vibe: Tech-forward, professional, modern
+best_for: tech, SaaS, AI, consulting, software, developer, startup, cybersecurity, data, analytics, B2B technology
+---
 # Midnight Blue (DEFAULT)
 
 > Dark, tech-forward theme with blue accents. The default theme for all generated pages.

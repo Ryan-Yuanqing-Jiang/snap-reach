@@ -1,3 +1,10 @@
+---
+theme_name: Vibrant Tech
+mode: Dark
+accent_color: Neon Green
+vibe: Bold, high-energy, energetic
+best_for: startup, gaming, developer tools, crypto, blockchain, social media, entertainment, creative agency, esports, mobile app, consumer tech, hackathon, youth
+---
 # Vibrant Tech
 
 > Dark, high-energy theme with neon green accents. Bold, startup-flavored, developer-friendly.

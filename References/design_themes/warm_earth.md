@@ -1,3 +1,10 @@
+---
+theme_name: Warm Earth
+mode: Light
+accent_color: Green / Pink
+vibe: Organic, approachable, warm, nature-inspired
+best_for: wellness, health, organic, food, agriculture, sustainability, eco, natural, beauty, spa, fitness, yoga, cafe, restaurant, retail, lifestyle
+---
 # Warm Earth
 
 > Light, organic theme with green and pink accents. Warm, approachable, nature-inspired.

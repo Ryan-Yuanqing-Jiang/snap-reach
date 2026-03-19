@@ -17,8 +17,31 @@ You are building a personalized B2B sales microsite — a single HTML file a sal
 **Optional output**: `qr-[prospect-slug].png` — QR code for the deployed URL
 
 # Input: 
-The salesperson will provide their own business URL {seller_url} and a Prospect’s URL/LinkedIn {prospect_url}.
-*Optional*: The salesperson may explicitly request a specific design theme from `./references/design_themes/` to be used for the page. 
+Users can provide the following input:
+
+**1. Seller and Prospect Information:**
+- URLs (e.g., LinkedIn profile URL, company website URL).
+- Company or product descriptions. *Note: If the user provides descriptions instead of URLs, you must use web search to identify the correct company and prospect, and use the web search results to supplement the user's input.*
+
+**2. Design Theme:**
+- Users can explicitly choose a specific design theme from `./references/design_themes/`.
+- Alternatively, users can provide a few words about the style/design they want, and you should use that instruction to pick the most appropriate theme.
+
+**3. Execution Mode (Auto vs. Interactive):**
+Users can specify whether they want to run in **Auto** or **Interactive** mode.
+- **Auto mode**: Execute all steps sequentially without asking for user feedback once you have the initial input context.
+- **Interactive mode**: Ask for clarifying questions and user feedback at specific steps to guide the generation (see the Interactive Mode Guidelines below).
+
+# Interactive Mode Guidelines
+*(Only applicable if the user chooses Interactive mode)*
+
+Interactive mode allows you to mutually refine the output with the user. Follow these rules:
+1. **Proactive Clarification**: At any step, if you think you need more information to produce better results, you must ask the user for clarification or feedback.
+2. **Feedback Checkpoints**: 
+   - After **Step 1**, **Step 2**, and **Step 3**, you must concisely present the work done so far and explicitly ask the user for feedback *before* proceeding to the next step.
+   - You must use the user's feedback to refine the work done so far before moving on.
+3. **No Feedback after Step 3**: Do not ask for user feedback after Step 4 or Step 5, as these are the final generation and deployment steps where you already have enough information.
+
 
 # Steps
 These are the steps you should follow:
@@ -192,12 +215,12 @@ Read all available markdown files and inventory their structure:
 - `Steps/prospect_challenges.md` — check for any additional operational insights that weren't captured in the 3 files above.
 
 ## Phase 1.5 — Select Design Theme
-Pick a design theme from `./references/design_themes/` using this priority:
+Pick a design theme from `./references/design_themes/` using the structured YAML metadata at the top of each theme file. Follow this priority order:
 
-1. **Explicit Request** — if the user explicitly asked for a specific design theme in their prompt (e.g., "Use the luxury_noir theme"), use that theme.
-2. **Match the prospect's website** — if you visited the prospect's URL in Step-1, identify the dominant visual tone (dark/light mode, accent colour family, industry feel) and compare it against the **Best-for Keywords** in each theme file. Select the closest match.
-3. **Match the seller's brand** — if the prospect's website design is not available or not distinctive enough to match confidently, use the seller's primary brand colour and website aesthetic to pick the theme whose accent colours and mood are closest.
-4. **Default** — if neither signal is available, use `midnight_blue.md`.
+1. **Explicit Request**: If the user explicitly asked for a specific design theme or described a specific visual style (e.g., "Use the luxury_noir theme" or "make it look premium and dark"), use the theme metadata `theme_name`, `vibe`, or `accent_color` to find the exact match.
+2. **Contextual Match (Prospect alignment)**: Read the YAML metadata of all theme files. Match the prospect's industry and company maturity (startup vs enterprise) extracted in Step-1 to the `best_for` and `vibe` tags of the themes.
+3. **Visual Match (Seller's brand)**: If no strong prospect alignment exists, match the Seller's brand color aesthetic to the `accent_color` and `mode` of the themes.
+4. **Default**: If neither signal is available, use `midnight_blue.md`.
 
 Record the chosen theme name in your Phase 2 plan. You will apply its CSS variables, Google Fonts link, and Component Overrides when composing the HTML in Phase 3.
 

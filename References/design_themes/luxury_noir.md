@@ -1,3 +1,10 @@
+---
+theme_name: Luxury Noir
+mode: Dark
+accent_color: Gold
+vibe: Refined, exclusive, premium, elegant
+best_for: luxury, fashion, premium, high-end, jewelry, real estate, architecture, fine dining, hospitality, automotive, watches, spirits, heritage brands
+---
 # Luxury Noir
 
 > Dark, refined theme with gold accents and serif typography. Conveys exclusivity and premium quality.
