@@ -29,3 +29,15 @@ env/
 # Logs and databases
 *.log
 *.sqlite
+
+# Outputs and AI Configs
+.agent/
+.agents/
+.claude/
+claude/
+md_files/
+pages/
+qr_codes/
+prompt_history.md
+GEMINI.md
+skills-lock.json

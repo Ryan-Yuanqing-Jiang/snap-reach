@@ -82,7 +82,7 @@ You should also learn about the latest trends in the Prospect's industry and how
 Use a sub-agent to identify prospect's challenges and pain points:
 1. Ask it to follow the instructions in the {./references/prospect_research.md} file. And give it the research and context you've learned in Step-1.
 2. Once you get the result from the sub-agent, you should review it and make sure it is accurate and comprehensive. If not, you should ask the sub-agent to refine it.
-3. Then save the result in a file named {./Steps/prospect_challenges.md}.
+3. Then save the result in a file named `./md_files/[prospect-slug]/prospect_challenges.md`.
 
 # Step-3: Generate the markdown sales collateral
 With the deep understanding of the Seller and the Prospect, you can now generate the markdown sales collateral.
@@ -285,9 +285,9 @@ If `npx` or `pinme` isn't available, show the user this command and explain they
 1. Create the `./qr_codes` directory if it does not exist.
 2. Run the QR code generation script:
    ```
-   python3 ./references/scripts/generate_qr.py "<site_url>" "./qr_codes/qr-<prospect-slug>.png"
+   python3 ./references/scripts/generate_qr.py "<site_url>" "./qr_codes/qr-<prospect-slug>.png" --prospect "<prospect_name>" --seller "<seller_name>"
    ```
-   Replace `<site_url>` with the direct site URL extracted in Phase 3, and `<prospect-slug>` with the prospect's slug used throughout the skill.
+   Replace `<site_url>` with the direct site URL extracted in Phase 3, `<prospect-slug>` with the prospect's slug, and provide the actual prospect and seller names to the `--prospect` and `--seller` arguments to personalize the QR code design.
 
 ## Phase 4 — Report results
 Return the following to the user:
