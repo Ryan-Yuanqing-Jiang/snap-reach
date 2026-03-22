@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HubSpot x LSKD - Strategic Value</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+/* CSS tokens and base styles */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #07090e;
+  --sur: #0d1120;
+  --sur2: #131929;
+  --bdr: rgba(255,255,255,0.07);
+  --ac: #4f6ef7;
+  --ac2: #7c3aed;
+  --gn: #10b981;
+  --rd: #f43f5e;
+  --tx: #f1f5f9;
+  --mt: rgba(241,245,249,0.48);
+  --f: 'Space Grotesk', -apple-system, sans-serif;
+}
+html { scroll-behavior: smooth; }
+body { font-family: var(--f); background: var(--bg); color: var(--tx); min-height: 100vh; padding-bottom: 76px; }
+
+/* scaffold css */
+.topbar { position: fixed; top: 0; left: 0; right: 0; z-index: 99; background: rgba(7,9,14,0.88); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); border-bottom: 1px solid var(--bdr); padding: 13px 20px; display: flex; align-items: center; justify-content: space-between; }
+.tb-name { font-size: 14px; font-weight: 700; }
+.tb-chip { display: inline-flex; align-items: center; gap: 5px; background: rgba(79,110,247,0.13); border: 1px solid rgba(79,110,247,0.22); border-radius: 100px; padding: 4px 12px; font-size: 11px; color: #818cf8; font-weight: 600; }
+
+.bnav { position: fixed; bottom: 0; left: 0; right: 0; z-index: 99; background: rgba(7,9,14,0.94); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-top: 1px solid var(--bdr); padding: 10px 12px 16px; display: flex; justify-content: space-around; }
+.ntab { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 7px 18px; border-radius: 10px; cursor: pointer; border: none; background: none; color: var(--mt); font-family: var(--f); text-decoration: none; transition: all 0.2s; }
+.ntab.active { color: var(--ac); background: rgba(79,110,247,0.1); }
+.ntab-ic { font-size: 18px; line-height: 1; }
+.ntab-lb { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+
+.r { opacity: 0; transform: translateY(18px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.r.vis { opacity: 1; transform: none; }
+
+.sec { padding: 88px 22px 52px; }
+.sec + .sec { border-top: 1px solid var(--bdr); }
+.ey { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--ac); margin-bottom: 14px; }
+.htitle { font-size: clamp(26px, 7.5vw, 38px); font-weight: 700; line-height: 1.15; margin-bottom: 14px; background: linear-gradient(140deg, var(--tx) 40%, rgba(241,245,249,0.6)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.hsub { font-size: 16px; color: var(--mt); line-height: 1.6; margin-bottom: 26px; }
+
+.slabel { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--mt); margin-bottom: 14px; }
+.cta-main { display: block; text-align: center; background: var(--ac); color: white; padding: 15px 24px; border-radius: 12px; font-size: 16px; font-weight: 600; text-decoration: none; transition: all 0.2s; width: 100%; border: none; cursor: pointer; font-family: var(--f); }
+.cta-main:hover { background: #3d5af5; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(79,110,247,0.38); }
+
+/* Components */
+.intro-block { background: var(--sur); border: 1px solid var(--bdr); border-left: 3px solid var(--ac); border-radius: 0 12px 12px 0; padding: 18px 20px; font-size: 15px; line-height: 1.68; color: rgba(241,245,249,0.82); margin-bottom: 30px; }
+.market-fit { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+.mf-pill { display: inline-flex; align-items: center; gap: 6px; background: var(--sur); border: 1px solid var(--bdr); border-radius: 100px; padding: 6px 14px; font-size: 12px; color: var(--mt); font-weight: 500; }
+.mf-pill .mf-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ac); flex-shrink: 0; }
+
+.vp-card { display: flex; gap: 14px; align-items: flex-start; background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 15px; margin-bottom: 10px; transition: border-color 0.2s, transform 0.25s; }
+.vp-card:hover { border-color: rgba(79,110,247,0.28); transform: translateX(4px); }
+.vp-icon { font-size: 22px; flex-shrink: 0; line-height: 1; }
+.vp-title { font-size: 14px; font-weight: 700; margin-bottom: 5px; }
+.vp-desc { font-size: 13px; color: var(--mt); line-height: 1.55; }
+
+.exec-gap { background: var(--sur); border: 1px solid var(--bdr); border-left: 3px solid var(--rd); border-radius: 0 12px 12px 0; padding: 18px 20px; font-size: 14px; line-height: 1.68; color: rgba(241,245,249,0.78); margin-bottom: 28px; }
+
+.chal-card { background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 18px; margin-bottom: 12px; }
+.chal-header { display: flex; gap: 12px; align-items: center; margin-bottom: 12px; }
+.chal-icon { font-size: 22px; flex-shrink: 0; line-height: 1; }
+.chal-title { font-size: 15px; font-weight: 700; }
+.chal-row { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 8px; }
+.chal-row:last-child { margin-bottom: 0; }
+.chal-tag { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; padding: 3px 8px; border-radius: 4px; flex-shrink: 0; margin-top: 2px; }
+.chal-tag.pain { background: rgba(244,63,94,0.12); color: var(--rd); }
+.chal-tag.solution { background: rgba(79,110,247,0.12); color: var(--ac); }
+.chal-tag.roi { background: rgba(16,185,129,0.12); color: var(--gn); }
+.chal-body { font-size: 13px; color: var(--mt); line-height: 1.55; }
+
+.why-box { background: linear-gradient(135deg, rgba(79,110,247,0.09), rgba(124,58,237,0.06)); border: 1px solid rgba(79,110,247,0.14); border-radius: 12px; padding: 20px; margin: 24px 0 20px; }
+.why-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: #818cf8; margin-bottom: 10px; }
+.why-body { font-size: 14px; line-height: 1.65; color: rgba(241,245,249,0.78); }
+
+.out-row { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 6px; margin: 20px 0 10px; scrollbar-width: none; }
+.out-row::-webkit-scrollbar { display: none; }
+.out-card { min-width: 130px; flex-shrink: 0; background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 16px 14px; text-align: center; }
+.out-metric { font-size: 22px; font-weight: 700; background: linear-gradient(135deg, var(--ac), #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1.2; margin-bottom: 5px; }
+.out-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--mt); margin-bottom: 6px; }
+.out-desc { font-size: 11px; color: var(--mt); line-height: 1.4; }
+
+.trend-box { background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 20px; margin: 20px 0 28px; }
+.trend-row { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--bdr); }
+.trend-row:last-child { border-bottom: none; }
+.trend-label { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; padding: 3px 8px; border-radius: 4px; flex-shrink: 0; margin-top: 2px; }
+.trend-label.trend { background: rgba(79,110,247,0.12); color: var(--ac); }
+.trend-label.threat { background: rgba(244,63,94,0.12); color: var(--rd); }
+.trend-body { font-size: 14px; color: rgba(241,245,249,0.8); line-height: 1.6; }
+
+.leader { display: flex; gap: 14px; align-items: flex-start; padding: 15px 0; border-bottom: 1px solid var(--bdr); }
+.leader:last-child { border-bottom: none; }
+.leader-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ac); flex-shrink: 0; margin-top: 5px; }
+.leader-title { font-size: 13px; font-weight: 700; color: #818cf8; margin-bottom: 5px; }
+.leader-body { font-size: 13px; color: var(--mt); line-height: 1.55; }
+
+.rec-list { margin: 20px 0 28px; }
+.rec-item { display: flex; gap: 12px; align-items: flex-start; background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; padding: 15px; margin-bottom: 8px; transition: border-color 0.2s; }
+.rec-item:hover { border-color: rgba(16,185,129,0.3); }
+.rec-check { font-size: 16px; flex-shrink: 0; line-height: 1; }
+.rec-text { font-size: 14px; color: rgba(241,245,249,0.82); line-height: 1.55; }
+
+.next-steps { margin: 20px 0; }
+.ns-item { display: flex; gap: 12px; align-items: center; padding: 14px 16px; background: var(--sur); border: 1px solid var(--bdr); border-radius: 12px; margin-bottom: 8px; font-size: 14px; color: rgba(241,245,249,0.85); transition: border-color 0.2s; }
+.ns-item:hover { border-color: rgba(79,110,247,0.28); }
+.ns-arrow { color: var(--ac); font-size: 16px; flex-shrink: 0; }
+
+.contact-box { background: linear-gradient(135deg, rgba(79,110,247,0.1), rgba(124,58,237,0.07)); border: 1px solid rgba(79,110,247,0.15); border-radius: 16px; padding: 28px 22px; text-align: center; margin-top: 28px; }
+.contact-name { font-size: 20px; font-weight: 700; margin-bottom: 5px; }
+.contact-co { font-size: 13px; color: var(--mt); margin-bottom: 8px; }
+.contact-cta { font-size: 14px; color: rgba(241,245,249,0.7); line-height: 1.6; margin-bottom: 22px; }
+.btn-cta { display: block; text-decoration: none; text-align: center; padding: 14px 20px; border-radius: 12px; font-size: 15px; font-weight: 600; font-family: var(--f); transition: all 0.2s; margin-bottom: 10px; }
+.btn-cta-solid { background: var(--ac); color: white; }
+.btn-cta-solid:hover { background: #3d5af5; transform: translateY(-1px); }
+.btn-cta-outline { background: transparent; color: var(--tx); border: 1px solid var(--bdr); }
+.btn-cta-outline:hover { border-color: rgba(255,255,255,0.2); }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="tb-name">HubSpot</div>
+  <div class="tb-chip">✦ For LSKD</div>
+</div>
+
+<nav class="bnav" id="bnav">
+  <a href="#sec-value" class="ntab active" data-sec="sec-value">
+    <span class="ntab-ic">💎</span>
+    <span class="ntab-lb">Value</span>
+  </a>
+  <a href="#sec-fit" class="ntab" data-sec="sec-fit">
+    <span class="ntab-ic">🔄</span>
+    <span class="ntab-lb">Fit</span>
+  </a>
+  <a href="#sec-trends" class="ntab" data-sec="sec-trends">
+    <span class="ntab-ic">📈</span>
+    <span class="ntab-lb">Trends</span>
+  </a>
+</nav>
+
+<!-- Value Proposition -->
+<section class="sec" id="sec-value">
+  <div class="ey">Platform Overview</div>
+  <h1 class="htitle">Unify Data, Personalize Fast</h1>
+  
+  <div class="intro-block r">HubSpot is an AI-powered customer platform connecting marketing, sales, service, and commerce. For LSKD, we unify data across touchpoints to deliver personalized consumer experiences at global scale.</div>
+  
+  <div class="market-fit r">
+    <div class="mf-pill"><span class="mf-dot"></span> AI Platform / CRM</div>
+    <div class="mf-pill"><span class="mf-dot"></span> DTC Activewear</div>
+  </div>
+
+  <div class="slabel">Unique Attributes</div>
+  
+  <div class="vp-card r">
+    <div class="vp-icon">🛡️</div>
+    <div>
+      <div class="vp-title">Single System of Truth</div>
+      <div class="vp-desc">Replaces disjointed marketing, service, and storefront silos by centralizing all LSKD interactions.</div>
+    </div>
+  </div>
+  <div class="vp-card r">
+    <div class="vp-icon">🎯</div>
+    <div>
+      <div class="vp-title">AI-First Personalization</div>
+      <div class="vp-desc">Empowers crafting hyper-targeted campaigns for new drops based on rich omni-channel interactions.</div>
+    </div>
+  </div>
+
+  <div class="slabel">Key Capabilities for LSKD</div>
+  <div class="vp-card r">
+    <div class="vp-icon">⚡</div>
+    <div>
+      <div class="vp-title">Automated Marketing Hub</div>
+      <div class="vp-desc">Trigger campaigns for new drops and cart abandonment.</div>
+    </div>
+  </div>
+  <div class="vp-card r">
+    <div class="vp-icon">🤖</div>
+    <div>
+      <div class="vp-title">AI-Scaled Service Hub</div>
+      <div class="vp-desc">Scale ticketing with conversational bots to protect your margins.</div>
+    </div>
+  </div>
+
+  <a href="#sec-fit" class="cta-main" style="margin-top:24px">See Solution Fit →</a>
+</section>
+
+<!-- Solution Fit -->
+<section class="sec" id="sec-fit">
+  <div class="ey">Operational Alignment</div>
+  <h1 class="htitle">Eliminate Silos & Connect Campaigns</h1>
+
+  <div class="exec-gap r">Relying on fragmented tools creates data silos that slowly erode margin and risk brand loyalty. Adopting an integrated platform bridges the gap to scale seamlessly without huge headcount increases.</div>
+
+  <div class="slabel">Challenges vs Solutions</div>
+
+  <div class="chal-card r">
+    <div class="chal-header">
+      <div class="chal-icon">📊</div>
+      <div class="chal-title">Data Fragmentation</div>
+    </div>
+    <div class="chal-row">
+      <div class="chal-tag pain">Pain</div>
+      <div class="chal-body">Fragmented audience segmentation on major product drops.</div>
+    </div>
+    <div class="chal-row">
+      <div class="chal-tag solution">Fix</div>
+      <div class="chal-body">Native integration across transactional and marketing data giving a 360-degree view.</div>
+    </div>
+    <div class="chal-row">
+      <div class="chal-tag roi">ROI</div>
+      <div class="chal-body">25% increase in email conversion rates.</div>
+    </div>
+  </div>
+
+  <div class="chal-card r">
+    <div class="chal-header">
+      <div class="chal-icon">📦</div>
+      <div class="chal-title">Support Ticket Surges</div>
+    </div>
+    <div class="chal-row">
+      <div class="chal-tag pain">Pain</div>
+      <div class="chal-body">Growth brings surges in sizing queries and returns.</div>
+    </div>
+    <div class="chal-row">
+      <div class="chal-tag solution">Fix</div>
+      <div class="chal-body">AI chatbots and automated ticketing handle foundational queries instantly.</div>
+    </div>
+    <div class="chal-row">
+      <div class="chal-tag roi">ROI</div>
+      <div class="chal-body">40% reduction in resolution time.</div>
+    </div>
+  </div>
+
+  <div class="why-box r">
+    <div class="why-title">Why HubSpot? Why now?</div>
+    <div class="why-body">HubSpot is uniquely engineered all-in-one to deliver unrivaled agility for DTC brands. Delaying means risking revenue leakage and compromising your premium community experience.</div>
+  </div>
+
+  <div class="slabel">Next Steps</div>
+  <div class="next-steps">
+    <div class="ns-item r">
+      <div class="ns-arrow">→</div>
+      <div>Revenue Operations & Data Sync Audit</div>
+    </div>
+    <div class="ns-item r">
+      <div class="ns-arrow">→</div>
+      <div>Marketing Automation Pilot Review</div>
+    </div>
+  </div>
+
+  <a href="#sec-trends" class="cta-main" style="margin-top:24px">See Industry Trends →</a>
+</section>
+
+<!-- Industry Trends -->
+<section class="sec" id="sec-trends">
+  <div class="ey">Market Reality</div>
+  <h1 class="htitle">The AI DTC Shift</h1>
+
+  <div class="trend-box r">
+    <div class="trend-row">
+      <div class="trend-label trend">Trend</div>
+      <div class="trend-body">DTC fashion is moving to proactive, AI-driven predictive personalization.</div>
+    </div>
+    <div class="trend-row">
+      <div class="trend-label threat">Risk</div>
+      <div class="trend-body">Fragmented tech stacks bleed margin to rising acquisition costs.</div>
+    </div>
+  </div>
+
+  <div class="slabel">Setting the Standard</div>
+  <div class="leader r">
+    <div class="leader-dot"></div>
+    <div>
+      <div class="leader-title">How Leaders Win</div>
+      <div class="leader-body">Top brands consolidate platforms to execute fast iteration and focus on brand experience.</div>
+    </div>
+  </div>
+  <div class="leader r">
+    <div class="leader-dot"></div>
+    <div>
+      <div class="leader-title">The HubSpot Edge</div>
+      <div class="leader-body">Unifying the front office provides startup agility with enterprise operational muscle.</div>
+    </div>
+  </div>
+
+  <div class="slabel">Strategic Recommendations</div>
+  <div class="rec-list">
+    <div class="rec-item r">
+      <div class="rec-check">✅</div>
+      <div class="rec-text">Protect marketing ROI by dropping CAC via tight data targeting.</div>
+    </div>
+    <div class="rec-item r">
+      <div class="rec-check">✅</div>
+      <div class="rec-text">Scale service painlessly without adding headcount.</div>
+    </div>
+    <div class="rec-item r">
+      <div class="rec-check">✅</div>
+      <div class="rec-text">Future-proof LSKD with an AI-ready foundation.</div>
+    </div>
+  </div>
+
+  <div class="contact-box r">
+    <div class="contact-name">HubSpot Team</div>
+    <div class="contact-co">HubSpot · AI Customer Platform</div>
+    <div class="contact-cta">Let's build communities effectively and scale without silos.</div>
+  </div>
+</section>
+
+<script>
+  // Scroll-reveal animation
+  const obs = new IntersectionObserver(es => {
+    es.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.r').forEach(el => obs.observe(el));
+
+  // Tab click handler
+  function setTab(el) {
+    document.querySelectorAll('.ntab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // Auto-highlight on scroll
+  const secs = ['sec-value', 'sec-fit', 'sec-trends'];
+  const tabs = document.querySelectorAll('.ntab');
+  const scrollObs = new IntersectionObserver(es => {
+    es.forEach(e => {
+      if (e.isIntersecting) {
+        const i = secs.indexOf(e.target.id);
+        tabs.forEach((t, j) => t.classList.toggle('active', i === j));
+      }
+    });
+  }, { threshold: 0.45 });
+  secs.map(id => document.getElementById(id)).forEach(el => { if (el) scrollObs.observe(el); });
+</script>
+
+</body>
+</html>

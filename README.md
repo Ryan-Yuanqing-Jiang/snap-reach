@@ -23,7 +23,7 @@ When triggered, the agent autonomously executes a 5-step workflow:
 
 | Example Live Site | Example QR Code |
 | :---: | :---: |
-| ![Example live site](examples/example.png) | ![Example QR Code](examples/qr-beretta.png) |
+| ![Example live site](examples/example.png) | ![Example QR Code](examples/qr-lskd.png) |
 
 *Leave feedback: Connect and share your feedback at [LinkedIn](https://www.linkedin.com/in/ryan-yuanqing-jiang/). I'd love to learn how to invest more to help sales and account management teams land more prospects and win more deals.*
 
